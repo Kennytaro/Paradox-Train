@@ -4,6 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour {
+  float facingDirection = 1;  // -1: Left | 1: Right
   public bool canMove = true;
   Stopwatch gameTimer = new Stopwatch();
   CharacterController controller;
@@ -62,6 +63,10 @@ public class PlayerMovement : MonoBehaviour {
 
   void Move() {
     if (isDashing) return;
+    if (movementXDir != 0) {
+      facingDirection = movementXDir;
+    }
+    
     velocity.x = movementXDir * speed * Time.fixedDeltaTime;
   }
 
@@ -76,7 +81,7 @@ public class PlayerMovement : MonoBehaviour {
       float storedVerticalVelocity = velocity.y;
       velocity.y = 0f;
 
-      Vector3 dashDirection = new Vector3(movementXDir, movementYDir, 0f).normalized;
+      Vector3 dashDirection = new Vector3(facingDirection, movementYDir, 0f).normalized;
       float dashTime = 0.2f; // seconds
       float elapsed = 0f;
 

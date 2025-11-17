@@ -50,7 +50,9 @@
   <ItemGroup>
     <Compile Include="Assets/PlayerObjectCollision.cs" />
     <Compile Include="Assets/Dialogue/DialogueTrigger.cs" />
+    <Compile Include="Assets/NPCs/Enemies/BirdEnemy.cs" />
     <Compile Include="Assets/PlayerMovement.cs" />
+    <Compile Include="Assets/NPCs/Enemies/Enemy.cs" />
     <Compile Include="Assets/Dialogue/Dialogue.cs" />
     <Compile Include="Assets/Dialogue/DialogueManager.cs" />
   </ItemGroup>
@@ -570,6 +572,10 @@
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe">
       <HintPath>Library/PackageCache/com.unity.collections@aea9d3bd5e19/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Pathfinding.Ionic.Zip.Reduced">
+      <HintPath>Assets/AstarPathfindingProject/Plugins/DotNetZip/Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="netstandard">
@@ -1278,6 +1284,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="AstarPathfindingProjectEditor.csproj" />
+    <ProjectReference Include="AstarPathfindingProject.csproj" />
+    <ProjectReference Include="PackageToolsEditor.csproj" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>

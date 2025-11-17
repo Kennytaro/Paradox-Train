@@ -24,10 +24,7 @@ public class PlayerObjectCollision : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    Debug.Log(isCollidingWithPlayer + " | " + wantsToInteract);
-
     if (isCollidingWithPlayer && wantsToInteract) {
-      Debug.Log("Talking!");
       onTriggerEvent.Invoke();
     }
   }
