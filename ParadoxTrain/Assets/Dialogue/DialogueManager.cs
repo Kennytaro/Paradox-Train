@@ -19,7 +19,7 @@ public class DialogueManager : MonoBehaviour {
     ToggleVisibility(true);
 
     // Then stop player from being able to move mid dialogue
-    FindFirstObjectByType<PlayerMovement>().canMove = false;
+    FindFirstObjectByType<PlayerController>().canMove = false;
 
     // Then process dialogue stuff
     nameText.text = dialogue.name;
@@ -63,7 +63,7 @@ public class DialogueManager : MonoBehaviour {
     ToggleVisibility(false);
 
     // And allow player to move again
-    FindFirstObjectByType<PlayerMovement>().canMove = true;
+    FindFirstObjectByType<PlayerController>().canMove = true;
   }
 
   private void ToggleVisibility(bool visibility) {

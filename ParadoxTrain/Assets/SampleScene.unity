@@ -345,7 +345,7 @@ GameObject:
   - component: {fileID: 329309738}
   - component: {fileID: 329309737}
   - component: {fileID: 329309736}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1436,7 +1436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e2768c6758c654de9a60eeb642019f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 7
   health: 20
   damage: 5
   target: {fileID: 488172905}
@@ -1633,7 +1633,7 @@ GameObject:
   - component: {fileID: 1516548849}
   - component: {fileID: 1516548848}
   - component: {fileID: 1516548847}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -51,8 +51,8 @@
     <Compile Include="Assets/PlayerObjectCollision.cs" />
     <Compile Include="Assets/Dialogue/DialogueTrigger.cs" />
     <Compile Include="Assets/NPCs/Enemies/BirdEnemy.cs" />
-    <Compile Include="Assets/PlayerMovement.cs" />
     <Compile Include="Assets/NPCs/Enemies/Enemy.cs" />
+    <Compile Include="Assets/PlayerController.cs" />
     <Compile Include="Assets/Dialogue/Dialogue.cs" />
     <Compile Include="Assets/Dialogue/DialogueManager.cs" />
   </ItemGroup>

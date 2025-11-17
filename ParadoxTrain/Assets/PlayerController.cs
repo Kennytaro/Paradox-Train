@@ -3,7 +3,7 @@ using System.Diagnostics;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
   float facingDirection = 1;  // -1: Left | 1: Right
   public bool canMove = true;
   Stopwatch gameTimer = new Stopwatch();
@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour {
   readonly float gravity = -9.81f / 3;
   Vector3 velocity;
 
+  public float health = 100f;
   public float speed = 20f;
   public float jumpForce = 0.75f;
   float movementXDir = 0f;
@@ -30,6 +31,9 @@ public class PlayerMovement : MonoBehaviour {
   bool canDash;
 
   bool isCrouching = false;
+  
+  float lastHurt = float.NegativeInfinity;  // For temporary immunity after hit
+  readonly float hurtCooldown = 50f;
 
   
   void Start() {
@@ -164,5 +168,45 @@ public class PlayerMovement : MonoBehaviour {
 
     // Perform a capsule check with same radius as controller
     return Physics.CheckCapsule(checkStart, checkEnd, controller.radius, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore);
+  }
+
+  // Basically copy-pasted Dash function to make hurt function
+  public IEnumerator Hurt(float hurtAmount, Vector2 attackerPos) {
+    if (gameTimer.ElapsedMilliseconds - lastHurt >= hurtCooldown) {
+      // Only hurt player after immunity period
+      lastHurt = gameTimer.ElapsedMilliseconds;
+      health -= hurtAmount;
+
+      // Disable gravity while dashing
+      float storedVerticalVelocity = velocity.y;
+      velocity.y = 0f;
+
+      // Move player away from hurt
+      Vector3 hurtDirection = new Vector3(0, 2, 0);
+      if (transform.position.x >= attackerPos.x) {
+        hurtDirection.x = 2;
+      } else {
+        hurtDirection.x = -2;
+      }
+      hurtDirection = hurtDirection.normalized;
+
+      float hurtTime = 0.2f; // seconds
+      float elapsed = 0f;
+
+        while (elapsed < hurtTime) {
+          float t = elapsed / hurtTime;
+          float speedMultiplier = Mathf.Lerp(1f, 0f, t * t); // quadratic ease-out
+          float frameDistance = 4f * speedMultiplier / hurtTime * Time.deltaTime;
+
+          controller.Move(hurtDirection * frameDistance);
+
+          elapsed += Time.deltaTime;
+          yield return null;
+        }
+
+      // Not restoring the gravity once the dash is done
+      velocity.y = storedVerticalVelocity;
+    }
+    yield return null;
   }
 }
