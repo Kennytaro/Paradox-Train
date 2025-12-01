@@ -1,22 +1,17 @@
 using System.Collections;
-using System.Diagnostics;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerController : MonoBehaviour {
-  float facingDirection = 1;  // -1: Left | 1: Right
+[RequireComponent(typeof(SpriteRenderer))]
+public class PlayerController : Entity {
   public bool canMove = true;
-  Stopwatch gameTimer = new Stopwatch();
-  CharacterController controller;
 
-  readonly float gravity = -9.81f / 3;
-  Vector3 velocity;
-
-  public float health = 100f;
-  public float speed = 20f;
-  public float jumpForce = 0.75f;
   float movementXDir = 0f;
   float movementYDir = 0f;
+
+  public float damage = 5;
+  public float attackRadius = 2f;
+  public LayerMask enemyLayer;
 
   bool hasJumped = false;
   float queuedJump = float.NegativeInfinity;
@@ -32,13 +27,9 @@ public class PlayerController : MonoBehaviour {
 
   bool isCrouching = false;
   
-  float lastHurt = float.NegativeInfinity;  // For temporary immunity after hit
-  readonly float hurtCooldown = 50f;
-
-  
-  void Start() {
-    controller = GetComponent<CharacterController>();
-    gameTimer.Start();
+  public override void Start() {
+    base.Start();
+    speed = 10f;
   }
 
   void Update() {
@@ -53,7 +44,7 @@ public class PlayerController : MonoBehaviour {
     canDash = gameTimer.ElapsedMilliseconds - lastDashTime >= dashCooldown;
   }
 
-  void FixedUpdate() {
+  public override void FixedUpdate() {
     // Functions split up so that we can modify them separately later if needed
     // Should help us in the long run    
     if (!isDashing) Jump();
@@ -61,8 +52,10 @@ public class PlayerController : MonoBehaviour {
     Move();
     StartCoroutine(Dash());
     Crouch();
+    Attack();
 
     if (canMove) controller.Move(velocity);
+    base.FixedUpdate();
   }
 
   void Move() {
@@ -86,6 +79,11 @@ public class PlayerController : MonoBehaviour {
       velocity.y = 0f;
 
       Vector3 dashDirection = new Vector3(facingDirection, movementYDir, 0f).normalized;
+      if (Input.GetButton("Vertical") && movementXDir == 0) {
+        dashDirection.x = 0;
+        dashDirection.y = 1;
+      }
+
       float dashTime = 0.2f; // seconds
       float elapsed = 0f;
 
@@ -139,12 +137,10 @@ public class PlayerController : MonoBehaviour {
     bool wantsToCrouch = Input.GetButton("Crouch");
 
     if (wantsToCrouch) {
-      transform.localScale = new Vector3(1.0f, 0.7f, 1.0f);
       controller.height = 1.4f;
-      controller.center = new Vector3(0, -0.25f, 0);
+      controller.center = new Vector3(0, -0.3f, 0);
       isCrouching = true;
     } else if (isCrouching && !IsCeilingBlocked()) {
-      transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
       controller.height = 2;
       controller.center = new Vector3(0, 0, 0);
       isCrouching = false;
@@ -159,7 +155,7 @@ public class PlayerController : MonoBehaviour {
 
     // The potential "top" if we uncrouch to full height
     float standHeight = 2f; // normal standing height (match your controller default)
-    float crouchHeight = 1.5f;
+    float crouchHeight = 1.4f;
     float extraHeight = standHeight - crouchHeight;
 
     // Capsule points for the area above the player's head
@@ -167,46 +163,25 @@ public class PlayerController : MonoBehaviour {
     Vector3 checkEnd = checkStart + Vector3.up * extraHeight;          // where head would be if standing
 
     // Perform a capsule check with same radius as controller
-    return Physics.CheckCapsule(checkStart, checkEnd, controller.radius, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore);
+    return Physics.CheckCapsule(checkStart, checkEnd, controller.radius, LayerMask.GetMask("Colliders"), QueryTriggerInteraction.Ignore);
   }
 
-  // Basically copy-pasted Dash function to make hurt function
-  public IEnumerator Hurt(float hurtAmount, Vector2 attackerPos) {
-    if (gameTimer.ElapsedMilliseconds - lastHurt >= hurtCooldown) {
-      // Only hurt player after immunity period
-      lastHurt = gameTimer.ElapsedMilliseconds;
-      health -= hurtAmount;
+  void Attack() {
+    bool pressedHurt = Input.GetButtonDown("Fire1");
+    if (!pressedHurt) return;
 
-      // Disable gravity while dashing
-      float storedVerticalVelocity = velocity.y;
-      velocity.y = 0f;
+    Collider[] hits = Physics.OverlapSphere(transform.position, attackRadius, enemyLayer);
+    foreach (Collider enemy in hits) {
+      Vector2 relativePos = enemy.transform.position - transform.position;
 
-      // Move player away from hurt
-      Vector3 hurtDirection = new Vector3(0, 2, 0);
-      if (transform.position.x >= attackerPos.x) {
-        hurtDirection.x = 2;
-      } else {
-        hurtDirection.x = -2;
-      }
-      hurtDirection = hurtDirection.normalized;
-
-      float hurtTime = 0.2f; // seconds
-      float elapsed = 0f;
-
-        while (elapsed < hurtTime) {
-          float t = elapsed / hurtTime;
-          float speedMultiplier = Mathf.Lerp(1f, 0f, t * t); // quadratic ease-out
-          float frameDistance = 4f * speedMultiplier / hurtTime * Time.deltaTime;
-
-          controller.Move(hurtDirection * frameDistance);
-
-          elapsed += Time.deltaTime;
-          yield return null;
+      // Check if enemy is on the correct side (left/right)
+      if ((facingDirection == 1 && relativePos.x >= 0) || (facingDirection == -1 && relativePos.x <= 0)) {
+        // Check vertical range
+        if (Mathf.Abs(relativePos.y) <= controller.height + attackRadius) {    // 2 (player height) + 1.5 (attack range)
+          // Enemy is within swing
+          StartCoroutine(enemy.GetComponent<Enemy>().Hurt(damage, transform.position));
         }
-
-      // Not restoring the gravity once the dash is done
-      velocity.y = storedVerticalVelocity;
+      }
     }
-    yield return null;
   }
 }
