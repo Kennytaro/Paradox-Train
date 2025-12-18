@@ -12,7 +12,7 @@ public class Entity : MonoBehaviour {
   public float jumpForce = 0.5f;
   public float gravity = -9.81f / 2;
 
-  public Vector3 velocity;
+  public Vector2 velocity;
 
   public float health = 100f;
   public float speed = 10f;

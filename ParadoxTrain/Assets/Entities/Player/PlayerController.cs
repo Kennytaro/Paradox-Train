@@ -16,6 +16,7 @@ public class PlayerController : Entity {
   bool hasJumped = false;
   float queuedJump = float.NegativeInfinity;
   float lastGroundedTime = float.NegativeInfinity;
+  public Vector2 groundPos;
   readonly float coyoteTime = 150f; // milliseconds
   readonly float queuedJumpBufferTime = 150f; // milliseconds
   
@@ -125,7 +126,22 @@ public class PlayerController : Entity {
 
     if (!isDashing) {
       velocity.y += gravity * Time.fixedDeltaTime;
-    
+
+      if (controller.isGrounded) {
+        groundPos = transform.position;
+      } else {
+        Vector3 pos = transform.position;
+        pos.z = 0;
+
+        if (Physics.Raycast(pos, Vector3.down, out RaycastHit hit, 10f, 1 << LayerMask.NameToLayer("Colliders"))) {
+          groundPos = hit.point;
+        }
+
+        // Leveling stuff so it's perfectly centered (I think that's why)
+        // Basically it keeps it in the same level as {transform.position} would
+        groundPos.y += (controller.height / 2) + controller.skinWidth;
+      }
+
       // small clamp to prevent micro-floating
       if (controller.isGrounded && velocity.y < 0f) {
         velocity.y = -0.1f;

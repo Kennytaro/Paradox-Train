@@ -3,193 +3,410 @@ using Pathfinding;
 
 [RequireComponent(typeof(Seeker))]
 public class BirdEnemy : Enemy {  
-  float stoopT = 0f;
-  float stoopDuration = 10f; // tweak
-  bool stooping = false;
-  Vector2 P0, P1, P2;
-
-  void Start() {
-    speed = 5f;
+  [Header("Flight Settings")]
+  public float normalFlightSpeed = 12f;
+  public float approachSpeed = 15f;
+  public float maxFlightSpeed = 20f;
+  public float flightSmoothTime = 0.3f;
+  public float hoverHeight = 5f;
+  public float hoverDistance = 7f;
+  public float bobbingAmplitude = 0.3f;
+  public float bobbingFrequency = 2f;
+  public float waypointReachedDistance = 0.5f;
+  
+  [Header("Deceleration Settings")]
+  public float slowdownStartDistance = 5f;
+  public float slowdownMinDistance = 1f;
+  public float slowdownMinimumSpeed = 2f;
+  public float decelerationCurve = 2f;
+  
+  [Header("Hover Settings")]
+  public float hoverForce = 10f; // Added: Force to counteract gravity when hovering
+  public float hoverStabilizationDistance = 2f; // Added: Distance to start stabilizing height
+  
+  [Header("Pathfinding Settings")]
+  public float pathUpdateInterval = 0.3f;
+  public float maxPathDistance = 30f;
+  public float pathHeightBuffer = 2f;
+  public float pathEndReachedDistance = 2f;
+  
+  private float hoverTimer = 0f;
+  private Vector2 flightSmoothVelocity;
+  private Vector2 targetHoverPosition;
+  private float lastPathUpdateTime;
+  private Vector2 lastPlayerPosition;
+  private bool hasValidPath = false;
+  private int currentPathIndex = 0;
+  private bool hasReachedPathEnd = false;
+  private bool isInHoverMode = false; // Added: Track if we're in hover mode
+  
+  public override void Start() {
+    base.Start();
+    speed = normalFlightSpeed;
     seeker = GetComponent<Seeker>();
-  
-    InvokeRepeating("UpdatePath", 0, 0.2f);
+    
+    // Initialize pathfinding
+    UpdateHoverTarget();
+    lastPathUpdateTime = Time.time;
+    
+    // Start periodic path updates
+    InvokeRepeating("UpdateFlightPath", 0f, pathUpdateInterval);
   }
-
+  
   void Update() {
-    if (path == null) return;
-    if (currentWaypointIndex >= path.vectorPath.Count) return;
-  }
-
-  public override void FixedUpdate() {
-    // Add a small delay after stoop before checking path again
-    if (stooping) {
-      velocity = CalculateStoopVelocity();
-    } else if (!reachedEndOfPath) {
-      velocity = CalculatePathFollowingVelocity();
-    } else {
-      velocity = CalculateStoopVelocity();
-    }
+    if (target == null) return;
     
-    // Apply velocity to rigidbody
-    // rb.linearVelocity = velocity;
-  }
-
-  void OnPathComplete(Path p) {
-    if (!p.error) {
-      path = p;
-      currentWaypointIndex = 0;
-    }
-  }
-
-  void UpdatePath() {
-    if (stooping || isAttacking) return;
-    Transform targetTransform = target.transform;
-
-    // if (targetTransform.position.x >= rb.position.x) {
-    //   playerDirection = 1;
-    // } else {
-    //   playerDirection = -1;
-    // }
-
-    Vector2 targetPosition = new Vector2(targetTransform.position.x + (5 * -playerDirection), targetTransform.position.y + 5f);
-
-    if (seeker.IsDone()) {
-      // seeker.StartPath(rb.position, targetPosition, OnPathComplete);
-    }
-  }
-
-  Vector2 CalculatePathFollowingVelocity() {
-    if (path == null) return Vector2.zero;
-
-    reachedEndOfPath = currentWaypointIndex >= path.vectorPath.Count;
-    if (reachedEndOfPath) return Vector2.zero;
-
-    Vector2 waypoint = path.vectorPath[currentWaypointIndex];
-    // float distance = Vector2.Distance(rb.position, waypoint);
-
-    // deadzone to not jitter when near target
-    // float deadZone = 1f;
-    // if (distance < deadZone) {
-    //   // Gradually slow down when approaching waypoint
-    //   Vector2 slowedVelocity = Vector2.Lerp(velocity, Vector2.zero, 6f * Time.fixedDeltaTime);
-    //   currentWaypointIndex++;
-    //   return slowedVelocity;
-    // }
-
-    // deceleration logic
-    // float slowRadius = 3f;
-    // float targetSpeed = Mathf.Clamp01(distance / slowRadius) * speed;
-
-    // Vector2 direction = (waypoint - (Vector2)rb.position).normalized;
-    // Vector2 desiredVelocity = direction * targetSpeed;
-
-    // Smooth velocity changes
-    // Vector2 acceleration = (desiredVelocity - velocity) * speed;
-    // Vector2 newVelocity = velocity + acceleration * Time.fixedDeltaTime;
-
-    // speed limiter
-    // newVelocity = Vector2.ClampMagnitude(newVelocity, speed);
-
-    // if (distance < nextWaypointDistance) {
-    //   currentWaypointIndex++;
-    // }
+    // Update facing direction
+    playerDirection = target.transform.position.x >= transform.position.x ? 1 : -1;
+    facingDirection = playerDirection;
     
-    // return newVelocity;
-    return Vector2.zero;
-  }
-
-  // Bird attack - now returns velocity instead of directly moving
-  Vector2 CalculateStoopVelocity() {
-    // Only run once to avoid overriding path
-    if (!stooping) {
-      stooping = true;
-      stoopT = 0f;
-
-      // Cache the curve points
-      // P0 = (Vector2)rb.position;              // start
-      P1 = (Vector2)target.transform.position + Vector2.down * 4; // lowest point/peak of stoop
-      P2 = new Vector2(
-        P1.x + 15f * playerDirection,        // exit forward
-        P1.y + 10f                           // go above player after attack
-      );
+    // Update hover target periodically
+    hoverTimer += Time.deltaTime;
+    if (hoverTimer >= 0.1f) {
+      UpdateHoverTarget();
+      hoverTimer = 0f;
     }
-
-    // Stoop movement - calculate velocity based on bezier curve with smooth acceleration/deceleration
-    stoopT += Time.fixedDeltaTime / stoopDuration;
-    stoopT = Mathf.Clamp01(stoopT);
-
-    // Calculate the eased t value for smooth acceleration and deceleration
-    float easedT;
-    if (stoopT < 0.5f) {
-      // First half: accelerate (ease in)
-      easedT = 2f * stoopT * stoopT;
-    } else {
-      // Second half: decelerate (ease out)
-      easedT = 1f - 2f * (1f - stoopT) * (1f - stoopT);
-    }
-
-    // Get positions at current and next eased frames
-    Vector2 currentPos = GetBezierPoint(P0, P1, P2, easedT);
-    
-    // Calculate next eased t value
-    float nextT = Mathf.Clamp01(stoopT + Time.fixedDeltaTime / stoopDuration);
-    float nextEasedT;
-    if (nextT < 0.5f) {
-      nextEasedT = 2f * nextT * nextT;
-    } else {
-      nextEasedT = 1f - 2f * (1f - nextT) * (1f - nextT);
-    }
-    
-    Vector2 nextPos = GetBezierPoint(P0, P1, P2, nextEasedT);
-    
-    // Velocity is the difference between positions
-    Vector2 stoopVelocity = (nextPos - currentPos) / Time.fixedDeltaTime;
-
-    // Alternative approach: Direct velocity control with easing
-    // This gives you more direct control over the speed curve
-    /*
-    float speedMultiplier;
-    if (stoopT < 0.5f) {
-      // Accelerate toward vertex (0 to max speed)
-      speedMultiplier = Mathf.Lerp(0f, 1f, stoopT * 2f);
-    } else {
-      // Decelerate after vertex (max speed to 0)
-      speedMultiplier = Mathf.Lerp(1f, 0f, (stoopT - 0.5f) * 2f);
-    }
-    
-    // Get direction from bezier derivative
-    Vector2 tangent = GetBezierTangent(P0, P1, P2, easedT);
-    Vector2 stoopVelocity = tangent.normalized * speedMultiplier * maxStoopSpeed;
-    */
-
-    // End stoop attack
-    if (stoopT >= 1f) {
-      ResetAfterStoop();
-    }
-    
-    return stoopVelocity;
-  }
-
-  // Helper method to calculate the tangent/derivative of the bezier curve
-  // This gives you the direction of movement at any point on the curve
-  Vector2 GetBezierTangent(Vector2 a, Vector2 b, Vector2 c, float t) {
-    // Derivative of quadratic bezier: B'(t) = 2(1-t)(b-a) + 2t(c-b)
-    return 2f * (1f - t) * (b - a) + 2f * t * (c - b);
   }
   
-  void ResetAfterStoop() {
-    stooping = false;
-    isAttacking = false;
-    reachedEndOfPath = false;
-    path = null;
-    currentWaypointIndex = 0;
+  void UpdateHoverTarget() {
+    if (target == null) return;
     
-    // Force immediate path update
-    UpdatePath();
-  }
+    Vector2 playerPos = target.transform.position;
+    Vector2 groundPos = target.GetComponent<PlayerController>().groundPos;
+    
+    // Calculate ideal hover position
+    float randomOffset = Random.Range(-0.5f, 0.5f);
+    targetHoverPosition = new Vector2(
+      playerPos.x + (hoverDistance * -playerDirection) + randomOffset,
+      groundPos.y + hoverHeight
+    );
 
-  Vector2 GetBezierPoint(Vector2 a, Vector2 b, Vector2 c, float t) {
-    float u = 1f - t;
-    return (u * u * a) + (2f * u * t * b) + (t * t * c);
+    Vector3 finalWaypoint = path.vectorPath[path.vectorPath.Count - 1];
+    float distance = Vector2.Distance(transform.position, finalWaypoint);
+    Debug.Log(distance);
+    
+    // Check if we need a new path
+    float playerMoved = Vector2.Distance(playerPos, lastPlayerPosition);
+    if (playerMoved > 1.5f || !hasValidPath) {
+      UpdateFlightPath();
+      lastPlayerPosition = playerPos;
+    }
+  }
+  
+  void UpdateFlightPath() {
+    if (target == null || seeker == null) return;
+    
+    // Only request new path if not already at the end of current path
+    if (hasReachedPathEnd && Vector2.Distance(transform.position, targetHoverPosition) < 3f) {
+      return; // We're already where we want to be
+    }
+    
+    // Calculate the actual target position for pathfinding
+    Vector2 pathfindingTarget = targetHoverPosition;
+    
+    // Add some height buffer to fly over obstacles
+    pathfindingTarget.y += pathHeightBuffer;
+    
+    // Limit pathfinding distance
+    float distanceToTarget = Vector2.Distance(transform.position, pathfindingTarget);
+    if (distanceToTarget > maxPathDistance) {
+      // Too far, move towards player in smaller steps
+      Vector2 direction = (pathfindingTarget - (Vector2)transform.position).normalized;
+      pathfindingTarget = (Vector2)transform.position + direction * maxPathDistance;
+    }
+    
+    // Request a path
+    if (seeker.IsDone()) {
+      seeker.StartPath(transform.position, pathfindingTarget, new OnPathDelegate(OnPathComplete));
+    }
+  }
+  
+  private new void OnPathComplete(Path p) {
+    if (p.error) {
+      Debug.LogWarning("Pathfinding error: " + p.errorLog);
+      hasValidPath = false;
+      hasReachedPathEnd = false;
+      return;
+    }
+    
+    // Store the path
+    path = p;
+    currentPathIndex = 0;
+    hasValidPath = true;
+    hasReachedPathEnd = false;
+  }
+  
+  public override void FixedUpdate() {
+    if (target == null) {
+      base.FixedUpdate();
+      return;
+    }
+    
+    Fly();
+    
+    // Apply reduced gravity for flight
+    if (!isInHoverMode) {
+      // Only apply gravity when not in hover mode
+      velocity.y += gravity * 0.3f * Time.fixedDeltaTime;
+    } else {
+      // In hover mode, counteract gravity with hover force
+      velocity.y += (hoverForce + gravity * 0.3f) * Time.fixedDeltaTime;
+      
+      // Additional stabilization to maintain exact hover height
+      Vector2 groundPos = target.GetComponent<PlayerController>().groundPos;
+      float desiredHeight = groundPos.y + hoverHeight;
+      float currentHeight = transform.position.y;
+      float heightError = desiredHeight - currentHeight;
+      
+      if (Mathf.Abs(heightError) > 0.1f) {
+        velocity.y += heightError * 2f * Time.fixedDeltaTime;
+      }
+    }
+    
+    // Apply movement
+    // controller.Move(velocity * Time.fixedDeltaTime);
+  }
+  
+  void Fly() {
+    if (target == null) {
+      // Hover in place if no target
+      velocity = Vector2.Lerp(velocity, Vector2.zero, 5f * Time.fixedDeltaTime);
+      isInHoverMode = true;
+      return;
+    }
+    
+    // Add bobbing motion
+    float bobbingOffset = Mathf.Sin(Time.time * bobbingFrequency) * bobbingAmplitude;
+    
+    // Follow A* path if available and haven't reached the end
+    if (hasValidPath && !hasReachedPathEnd && path != null && path.vectorPath != null && path.vectorPath.Count > 0) {
+      FollowPath(bobbingOffset);
+    } else {
+      // Fallback: Direct flight towards target
+      DirectFlight(bobbingOffset);
+    }
+  }
+  
+  void FollowPath(float bobbingOffset) {
+    float distance = Vector2.Distance(transform.position, path.vectorPath[path.vectorPath.Count - 1]);
+
+    // Check if we've reached the end of the path
+    if (distance <= pathEndReachedDistance) {
+      hasReachedPathEnd = true;
+      hasValidPath = false;
+      isInHoverMode = true;
+      return;
+    }
+    
+    // Get current waypoint
+    Vector3 currentWaypoint = path.vectorPath[currentPathIndex];
+    
+    // Adjust waypoint height for bobbing
+    currentWaypoint.y += bobbingOffset;
+    
+    // Calculate direction to waypoint
+    Vector2 toWaypoint = currentWaypoint - transform.position;
+    float distanceToWaypoint = toWaypoint.magnitude;
+    
+    // Get the final waypoint in the path
+    Vector3 finalWaypoint = path.vectorPath[path.vectorPath.Count - 1];
+    float distanceToFinalWaypoint = Vector2.Distance(transform.position, finalWaypoint);
+    
+    // Check if we should enter hover mode
+    isInHoverMode = distanceToFinalWaypoint <= hoverStabilizationDistance;
+    
+    // Check if we've reached the end of the path
+    if (distanceToFinalWaypoint <= pathEndReachedDistance) {
+      hasReachedPathEnd = true;
+      hasValidPath = false;
+      isInHoverMode = true;
+      // Slow down to a hover
+      velocity = Vector2.Lerp(velocity, Vector2.zero, 8f * Time.fixedDeltaTime);
+      return;
+    }
+    
+    // Calculate slowdown factor based on distance to final waypoint
+    float slowdownFactor = CalculateSlowdownFactor(distanceToFinalWaypoint);
+    
+    // Calculate base speed
+    float currentMaxSpeed = normalFlightSpeed * slowdownFactor;
+    
+    // Move to next waypoint if close enough
+    if (distanceToWaypoint < waypointReachedDistance) {
+      currentPathIndex++;
+      
+      // Check if we've reached the end of the path
+      if (currentPathIndex >= path.vectorPath.Count) {
+        hasReachedPathEnd = true;
+        hasValidPath = false;
+        isInHoverMode = true;
+        // Hover in place at the target
+        velocity = Vector2.Lerp(velocity, Vector2.zero, 8f * Time.fixedDeltaTime);
+        return;
+      }
+      
+      // Get new waypoint
+      currentWaypoint = path.vectorPath[currentPathIndex];
+      currentWaypoint.y += bobbingOffset;
+      toWaypoint = currentWaypoint - transform.position;
+      distanceToWaypoint = toWaypoint.magnitude;
+    }
+    
+    // Calculate desired velocity
+    Vector2 desiredVelocity;
+    if (distanceToWaypoint > 0.1f) {
+      // Normalize direction
+      desiredVelocity = toWaypoint.normalized;
+      
+      // Adjust speed based on distance to waypoint
+      float waypointSpeedFactor = Mathf.Clamp01(distanceToWaypoint / 2f);
+      desiredVelocity *= currentMaxSpeed * waypointSpeedFactor;
+      
+      // Even slower if very close to final waypoint
+      if (distanceToFinalWaypoint < slowdownMinDistance) {
+        desiredVelocity *= Mathf.Clamp01(distanceToFinalWaypoint / slowdownMinDistance);
+      }
+      
+      // Add slight lift when flying to counteract gravity
+      if (!isInHoverMode && desiredVelocity.y < 0) {
+        desiredVelocity.y += Mathf.Abs(gravity) * 0.2f * Time.fixedDeltaTime;
+      }
+    } else {
+      desiredVelocity = Vector2.zero;
+    }
+    
+    // Add slight perpendicular motion for bird-like flight
+    if (slowdownFactor > 0.3f && !isInHoverMode) {
+      Vector2 perpendicular = Vector2.Perpendicular(desiredVelocity.normalized) * 0.2f;
+      float wiggle = Mathf.Sin(Time.time * 4f) * 0.1f;
+      desiredVelocity += perpendicular * wiggle * slowdownFactor;
+    }
+    
+    // Add gentle wing flaps
+    float wingFlap = Mathf.Sin(Time.time * 3f) * 0.15f;
+    desiredVelocity.y += wingFlap * Mathf.Clamp01(slowdownFactor * 2f) * (isInHoverMode ? 0.5f : 1f);
+    
+    // Apply air resistance
+    float airResistance = Mathf.Lerp(0.85f, 0.98f, slowdownFactor);
+    
+    // Smoothly interpolate to desired velocity
+    float currentSmoothTime = Mathf.Lerp(flightSmoothTime * 0.5f, flightSmoothTime * 2f, 1f - slowdownFactor);
+    velocity = Vector2.SmoothDamp(
+      velocity,
+      desiredVelocity,
+      ref flightSmoothVelocity,
+      currentSmoothTime,
+      currentMaxSpeed,
+      Time.fixedDeltaTime
+    );
+    
+    // Apply air resistance
+    velocity *= airResistance;
+  }
+  
+  void DirectFlight(float bobbingOffset) {
+    // Calculate direction to hover target (with bobbing)
+    Vector2 bobbingTarget = targetHoverPosition;
+    bobbingTarget.y += bobbingOffset;
+    
+    Vector2 toTarget = bobbingTarget - (Vector2)transform.position;
+    float distanceToTarget = toTarget.magnitude;
+    
+    // Check if we should enter hover mode
+    isInHoverMode = distanceToTarget <= hoverStabilizationDistance;
+    
+    // If we're very close to our target, just hover
+    if (distanceToTarget <= pathEndReachedDistance) {
+      hasReachedPathEnd = true;
+      isInHoverMode = true;
+      velocity = Vector2.Lerp(velocity, Vector2.zero, 5f * Time.fixedDeltaTime);
+      
+      // Request a new path only if we've drifted too far
+      if (distanceToTarget > 3f && Time.time - lastPathUpdateTime > pathUpdateInterval) {
+        UpdateFlightPath();
+        lastPathUpdateTime = Time.time;
+      }
+      return;
+    }
+    
+    // Calculate slowdown factor
+    float slowdownFactor = CalculateSlowdownFactor(distanceToTarget);
+    
+    // Calculate base speed
+    float currentMaxSpeed = normalFlightSpeed * slowdownFactor;
+    
+    // Calculate desired velocity
+    Vector2 desiredVelocity;
+    if (distanceToTarget > 0.5f) {
+      desiredVelocity = toTarget.normalized * currentMaxSpeed;
+      
+      // Even slower if very close
+      if (distanceToTarget < slowdownMinDistance) {
+        desiredVelocity *= Mathf.Clamp01(distanceToTarget / slowdownMinDistance);
+      }
+      
+      // Add slight lift when flying to counteract gravity
+      if (!isInHoverMode && desiredVelocity.y < 0) {
+        desiredVelocity.y += Mathf.Abs(gravity) * 0.2f * Time.fixedDeltaTime;
+      }
+    } else {
+      // Hover in place when close
+      desiredVelocity = Vector2.zero;
+    }
+    
+    // Add bird-like motion
+    if (slowdownFactor > 0.3f && !isInHoverMode) {
+      float wiggle = Mathf.Sin(Time.time * 5f) * 0.15f;
+      desiredVelocity.x += wiggle * slowdownFactor;
+    }
+    
+    // Add wing flaps
+    float wingFlap = Mathf.Sin(Time.time * 3.5f) * 0.2f;
+    desiredVelocity.y += wingFlap * Mathf.Clamp01(slowdownFactor * 2f) * (isInHoverMode ? 0.5f : 1f);
+    
+    // Apply air resistance
+    float airResistance = Mathf.Lerp(0.8f, 0.97f, slowdownFactor);
+    
+    // Smooth movement
+    float currentSmoothTime = Mathf.Lerp(flightSmoothTime * 0.5f, flightSmoothTime * 2f, 1f - slowdownFactor);
+    velocity = Vector2.SmoothDamp(
+      velocity,
+      desiredVelocity,
+      ref flightSmoothVelocity,
+      currentSmoothTime,
+      currentMaxSpeed,
+      Time.fixedDeltaTime
+    );
+    
+    // Apply air resistance
+    velocity *= airResistance;
+    
+    // Request a new path if we're far from target
+    if (distanceToTarget > 5f && Time.time - lastPathUpdateTime > pathUpdateInterval) {
+      UpdateFlightPath();
+      lastPathUpdateTime = Time.time;
+    }
+  }
+  
+  float CalculateSlowdownFactor(float distanceToTarget) {
+    if (distanceToTarget <= slowdownMinDistance) {
+      // Very close - minimum speed
+      return slowdownMinimumSpeed / normalFlightSpeed;
+    }
+    else if (distanceToTarget <= slowdownStartDistance) {
+      // Within slowdown range - calculate smooth slowdown
+      float normalizedDistance = (distanceToTarget - slowdownMinDistance) / 
+                                 (slowdownStartDistance - slowdownMinDistance);
+      
+      // Use exponential easing for smoother slowdown
+      float easedFactor = Mathf.Pow(normalizedDistance, decelerationCurve);
+      
+      // Map from minimum speed to normal speed
+      return Mathf.Lerp(slowdownMinimumSpeed, normalFlightSpeed, easedFactor) / normalFlightSpeed;
+    }
+    else {
+      // Far away - full speed
+      return 1f;
+    }
   }
 }
