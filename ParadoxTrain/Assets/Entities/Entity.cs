@@ -4,10 +4,12 @@ using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Animator))]
 public class Entity : MonoBehaviour {
   public float facingDirection = 1;  // -1: Left | 1: Right
   public CharacterController controller;
   public SpriteRenderer spriteRenderer;
+  public Animator anim;
   public Stopwatch gameTimer = new Stopwatch();
   public float jumpForce = 0.5f;
   public float gravity = -9.81f / 2;
@@ -23,6 +25,7 @@ public class Entity : MonoBehaviour {
   public virtual void Start() {
     controller = GetComponent<CharacterController>();
     spriteRenderer = GetComponent<SpriteRenderer>();
+    anim = GetComponent<Animator>();
     gameTimer.Start();
   }
 

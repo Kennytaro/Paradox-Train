@@ -22,7 +22,7 @@ public class PlayerController : Entity {
   
   float lastDashTime = float.NegativeInfinity;
   readonly float dashCooldown = 500f; // milliseconds
-  public float dashDistance = 10f;
+  public float dashDistance = 2.5f;
   bool isDashing = false;
   bool canDash;
 
@@ -55,8 +55,7 @@ public class PlayerController : Entity {
     Crouch();
     Attack();
 
-    if (canMove) controller.Move(velocity);
-    base.FixedUpdate();
+    if (canMove) base.FixedUpdate();
   }
 
   void Move() {
@@ -65,6 +64,7 @@ public class PlayerController : Entity {
       facingDirection = movementXDir;
     }
     
+    anim.SetBool("isRunning", movementXDir != 0);
     velocity.x = movementXDir * speed * Time.fixedDeltaTime;
   }
 
@@ -85,17 +85,17 @@ public class PlayerController : Entity {
         dashDirection.y = 1;
       }
 
-      float dashTime = 0.2f; // seconds
+      float dashTime = 0.25f; // seconds
       float elapsed = 0f;
 
         while (elapsed < dashTime) {
           float t = elapsed / dashTime;
           float speedMultiplier = Mathf.Lerp(1f, 0f, t * t); // quadratic ease-out
-          float frameDistance = (dashDistance * speedMultiplier / dashTime) * Time.deltaTime;
+          float frameDistance = (dashDistance * speedMultiplier / dashTime) * Time.fixedDeltaTime;
 
           controller.Move(dashDirection * frameDistance);
 
-          elapsed += Time.deltaTime;
+          elapsed += Time.fixedDeltaTime;
           yield return null;
         }
 
