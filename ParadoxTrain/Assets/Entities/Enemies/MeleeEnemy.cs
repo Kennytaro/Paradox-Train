@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MeleeEnemy : Enemy {
@@ -24,6 +25,14 @@ public class MeleeEnemy : Enemy {
       // small clamp to prevent micro-floating
       velocity.y = -0.1f;
     }
+
+    Debug.Log(DistanceFromPlayer());
+    if (DistanceFromPlayer() <= 2) {
+      velocity.x = 0;
+      playerDirection = 0;
+      path = null;
+      return;
+    } 
 
     velocity.x = playerDirection * speed * Time.fixedDeltaTime;
   }
