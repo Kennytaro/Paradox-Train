@@ -64,6 +64,7 @@
     <Compile Include="Assets/Entities/Entity.cs" />
     <Compile Include="Assets/CameraScaler.cs" />
     <Compile Include="Assets/Scenes/Door.cs" />
+    <Compile Include="Assets/Entities/Enemies/Yarn/Bobble.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets/TextMesh Pro/Shaders/TMPro.cginc" />
