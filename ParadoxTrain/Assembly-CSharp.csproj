@@ -42,24 +42,28 @@
     <UnityVersion>6000.0.62f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="/home/joelsgc/.vscode/extensions/visualstudiotoolsforunity.vstuc-1.2.0/Analyzers/Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="/home/joelsgc/.vscode/extensions/visualstudiotoolsforunity.vstuc-1.2.1/Analyzers/Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="/home/joelsgc/Unity/Hub/Editor/6000.0.62f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll" />
     <Analyzer Include="/home/joelsgc/Unity/Hub/Editor/6000.0.62f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
     <Analyzer Include="/home/joelsgc/Unity/Hub/Editor/6000.0.62f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets/PlayerObjectCollision.cs" />
+    <Compile Include="Assets/Scenes/LevelLoader.cs" />
     <Compile Include="Assets/Entities/Player/PlayerController.cs" />
     <Compile Include="Assets/Dialogue/DialogueTrigger.cs" />
     <Compile Include="Assets/Entities/Enemies/MeleeEnemy.cs" />
     <Compile Include="Assets/Entities/Enemies/BirdEnemy.cs" />
     <Compile Include="Assets/Entities/Enemies/Yarn/SpearController.cs" />
+    <Compile Include="Assets/Scenes/String Room/EnemySpawner.cs" />
     <Compile Include="Assets/Scenes/Main Menu/MainMenuController.cs" />
     <Compile Include="Assets/Scenes/BackgroundController.cs" />
     <Compile Include="Assets/Dialogue/Dialogue.cs" />
     <Compile Include="Assets/Dialogue/DialogueManager.cs" />
     <Compile Include="Assets/Entities/Enemies/Enemy.cs" />
     <Compile Include="Assets/Entities/Entity.cs" />
+    <Compile Include="Assets/CameraScaler.cs" />
+    <Compile Include="Assets/Scenes/Door.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets/TextMesh Pro/Shaders/TMPro.cginc" />

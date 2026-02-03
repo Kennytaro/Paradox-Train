@@ -117,7 +117,7 @@ public class MainMenuController : MonoBehaviour {
   }
 
   public void Play() {
-    SceneManager.LoadScene("Test Scene");
+    SceneManager.LoadScene("Starting Room");
   }
 
   public void Quit() {

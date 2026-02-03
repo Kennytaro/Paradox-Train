@@ -19,7 +19,7 @@ public class Enemy : Entity {
   public float distanceFromPlayerToTrack = 30;
   public float distanceFromReachedGoal = 1;
   
-  public bool isAttacking = false;
+  // public bool isAttacking = false;
 
   public Seeker seeker;
 

@@ -1,0 +1,594 @@
+fileFormatVersion: 2
+guid: 388d36b7fa7109e8093d1ac96e480493
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2449124129499032334
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_0
+  - first:
+      213: 1499681270898703049
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_1
+  - first:
+      213: 5668508539744706763
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_2
+  - first:
+      213: 8477814611405507188
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_3
+  - first:
+      213: 5910202269859996281
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_4
+  - first:
+      213: 1163933585529223651
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_5
+  - first:
+      213: -1831305812713412156
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_6
+  - first:
+      213: 7276904062763292773
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_7
+  - first:
+      213: 8965861150442174456
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_8
+  - first:
+      213: 4214309051830412898
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_9
+  - first:
+      213: -8531054377385830446
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_10
+  - first:
+      213: -6302701625546228519
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_11
+  - first:
+      213: 1835817521286523649
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_12
+  - first:
+      213: 2680067128705477223
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_13
+  - first:
+      213: 6690715104503097316
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_14
+  - first:
+      213: -1337132626765360287
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_15
+  - first:
+      213: -2792702771780906637
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_16
+  - first:
+      213: 7810114640841397031
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_17
+  - first:
+      213: -5661908230002551753
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_18
+  - first:
+      213: -6450752376703096268
+    second: Shadows_Melee-ezgif.com-gif-to-sprite-converter_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 320
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_1
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 1088
+        width: 320
+        height: 437
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ca39349b20ffc410800000000000000
+      internalID: 1499681270898703049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_3
+      rect:
+        serializedVersion: 2
+        x: 508
+        y: 1086
+        width: 339
+        height: 433
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47a0170c87f37a570800000000000000
+      internalID: 8477814611405507188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_4
+      rect:
+        serializedVersion: 2
+        x: 963
+        y: 1087
+        width: 336
+        height: 434
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97266bd96a1450250800000000000000
+      internalID: 5910202269859996281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_5
+      rect:
+        serializedVersion: 2
+        x: 1424
+        y: 1085
+        width: 337
+        height: 438
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e9bd93ed6f172010800000000000000
+      internalID: 1163933585529223651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_6
+      rect:
+        serializedVersion: 2
+        x: 1884
+        y: 1086
+        width: 300
+        height: 456
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c9eb16e015e596e0800000000000000
+      internalID: -1831305812713412156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_7
+      rect:
+        serializedVersion: 2
+        x: 2364
+        y: 1085
+        width: 226
+        height: 475
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5685a9db0b1ccf460800000000000000
+      internalID: 7276904062763292773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_8
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 542
+        width: 210
+        height: 497
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f7b49196332d6c70800000000000000
+      internalID: 8965861150442174456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_9
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 544
+        width: 208
+        height: 499
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 266a01811cb3c7a30800000000000000
+      internalID: 4214309051830412898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_10
+      rect:
+        serializedVersion: 2
+        x: 1005
+        y: 549
+        width: 275
+        height: 498
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d750644e3b9b9980800000000000000
+      internalID: -8531054377385830446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_11
+      rect:
+        serializedVersion: 2
+        x: 1439
+        y: 547
+        width: 340
+        height: 459
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dc3a04c34e4888a0800000000000000
+      internalID: -6302701625546228519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_12
+      rect:
+        serializedVersion: 2
+        x: 1889
+        y: 547
+        width: 344
+        height: 437
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10ba8bc1f422a7910800000000000000
+      internalID: 1835817521286523649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_13
+      rect:
+        serializedVersion: 2
+        x: 2352
+        y: 546
+        width: 338
+        height: 436
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76ae0bc9ad2813520800000000000000
+      internalID: 2680067128705477223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_14
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 11
+        width: 333
+        height: 431
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e76f3940f13adc50800000000000000
+      internalID: 6690715104503097316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_15
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 3
+        width: 305
+        height: 448
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 163d01cd5fc817de0800000000000000
+      internalID: -1337132626765360287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_16
+      rect:
+        serializedVersion: 2
+        x: 998
+        y: 6
+        width: 243
+        height: 480
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37110cc10a35e39d0800000000000000
+      internalID: -2792702771780906637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_17
+      rect:
+        serializedVersion: 2
+        x: 1464
+        y: 5
+        width: 220
+        height: 491
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 723dd66d2e9136c60800000000000000
+      internalID: 7810114640841397031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_18
+      rect:
+        serializedVersion: 2
+        x: 1925
+        y: 9
+        width: 221
+        height: 479
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73456df767cdc61b0800000000000000
+      internalID: -5661908230002551753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadows_Melee-ezgif.com-gif-to-sprite-converter_19
+      rect:
+        serializedVersion: 2
+        x: 2383
+        y: 9
+        width: 262
+        height: 493
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43aea9414e25a76a0800000000000000
+      internalID: -6450752376703096268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 17594c1e51dad4960843337f487e1f8b
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_0: 2449124129499032334
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_1: 1499681270898703049
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_10: -8531054377385830446
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_11: -6302701625546228519
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_12: 1835817521286523649
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_13: 2680067128705477223
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_14: 6690715104503097316
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_15: -1337132626765360287
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_16: -2792702771780906637
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_17: 7810114640841397031
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_18: -5661908230002551753
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_19: -6450752376703096268
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_2: 5668508539744706763
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_3: 8477814611405507188
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_4: 5910202269859996281
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_5: 1163933585529223651
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_6: -1831305812713412156
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_7: 7276904062763292773
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_8: 8965861150442174456
+      Shadows_Melee-ezgif.com-gif-to-sprite-converter_9: 4214309051830412898
+      melee_0: -1794448204
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

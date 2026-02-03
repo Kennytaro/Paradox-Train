@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Test Scene.unity
     guid: 2a5cd0433e739343eb4b083c05c683a6
+  - enabled: 1
+    path: Assets/Scenes/Starting Room/Starting Room.unity
+    guid: c5cdce3eb07787210ae501ed3ae198cd
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

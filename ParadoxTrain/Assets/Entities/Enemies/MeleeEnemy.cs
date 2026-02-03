@@ -1,11 +1,10 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MeleeEnemy : Enemy {
   public override void Start() {
     base.Start();
     InvokeRepeating("UpdatePath", 0, 0.2f);
-    speed = 5;
+    speed = 1.125f;
     jumpForce = 0f;
     distanceFromPlayerToTrack = 30;
 
@@ -15,6 +14,10 @@ public class MeleeEnemy : Enemy {
   public override void FixedUpdate() {
     Move();
     Attack();
+
+    if (health <= 0) {
+      Destroy(gameObject);
+    }
 
     base.FixedUpdate();
   }
@@ -26,15 +29,17 @@ public class MeleeEnemy : Enemy {
       velocity.y = -0.1f;
     }
 
-    Debug.Log(DistanceFromPlayer());
-    if (DistanceFromPlayer() <= 2) {
-      velocity.x = 0;
-      playerDirection = 0;
-      path = null;
-      return;
-    } 
+    // if (DistanceFromPlayer() <= 2) {
+    //   velocity.x = 0;
+    //   playerDirection = 0;
+    //   path = null;
+    //   return;
+    // } 
 
     velocity.x = playerDirection * speed * Time.fixedDeltaTime;
+    if (velocity.x != 0) {
+      facingDirection = velocity.x > 0 ? -1 : 1;
+    }
   }
 
   void Attack() {
@@ -45,7 +50,7 @@ public class MeleeEnemy : Enemy {
   }
 
   void UpdatePath() {
-    if (isAttacking) return;
+    // if (isAttacking) return;
     float distance = DistanceFromPlayer();
     if (distance > distanceFromPlayerToTrack || distance <= distanceFromReachedGoal) {
       velocity.x = 0;

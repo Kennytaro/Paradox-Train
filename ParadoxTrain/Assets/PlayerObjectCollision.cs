@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class PlayerObjectCollision : MonoBehaviour {
-  public string interactionName = "Box Interaction";
   public UnityEvent onTriggerEvent;
   bool isCollidingWithPlayer = false;
   bool wantsToInteract = false;
@@ -25,7 +24,11 @@ public class PlayerObjectCollision : MonoBehaviour {
 
   void FixedUpdate() {
     if (isCollidingWithPlayer && wantsToInteract) {
-      onTriggerEvent.Invoke();
+      Interact();
     }
+  }
+
+  public virtual void Interact() {
+    onTriggerEvent.Invoke();
   }
 }
