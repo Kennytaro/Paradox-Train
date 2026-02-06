@@ -42,6 +42,7 @@ public class Entity : MonoBehaviour {
       // Only hurt player after immunity period
       lastHurt = gameTimer.ElapsedMilliseconds;
       health -= hurtAmount;
+      spriteRenderer.color = Color.red;
 
       // Disable gravity while dashing
       float storedVerticalVelocity = velocity.y;
@@ -70,8 +71,9 @@ public class Entity : MonoBehaviour {
           yield return null;
         }
 
-      // Not restoring the gravity once the dash is done
+      // Now restoring the gravity once the dash is done
       velocity.y = storedVerticalVelocity;
+      spriteRenderer.color = Color.white;
     }
     yield return null;
   }
